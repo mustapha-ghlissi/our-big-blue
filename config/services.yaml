@@ -20,5 +20,21 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\EventSubscriber\FormSelectFieldSubscriber:
+        arguments:
+            - $builder
+
+    App\EventListener\ImageUriListener:
+        tags:
+            - { name: kernel.event_listener, event: vich_uploader.post_upload }
+
+    App\EventListener\JWTCreatedListener:
+        class: App\EventListener\JWTCreatedListener
+        arguments: [ '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+
+    App\Doctrine\CategoryExtension:
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection }
+            - { name: api_platform.doctrine.orm.query_extension.item }
