@@ -1,6 +1,6 @@
 
-—secrets:S6698"SMake sure this PostgreSQL database password gets changed and removed from the code.(ÿß°ıÿÿÿÿJ$7255cdd9-f879-4297-9c83-0d5dea116bef
-’secrets:S6697"NMake sure this MySQL database password gets changed and removed from the code.(Ñ¸«‹ùÿÿÿÿJ$a147a435-fade-4376-a0eb-2e6768566045
-™secrets:S6697"NMake sure this MySQL database password gets changed and removed from the code.(ğ¡ÜÛûÿÿÿÿ8§şÎœõ1J$ea0100f8-1527-4f48-8f73-247fc76f8d1f
-secrets:S6697"NMake sure this MySQL database password gets changed and removed from the code.(½ËõJ$24420b2c-e37c-4a63-9842-08160244e8c6
-šsecrets:S6736#"VMake sure these Rabbit MQ credentials get revoked, changed, and removed from the code.(ä¿ÎîúÿÿÿÿJ$12c4bf11-1bca-44c4-b30e-af712906dbbe
+—secrets:S6698"SMake sure this PostgreSQL database password gets changed and removed from the code.(ÿß°ıÿÿÿÿJ$a39fb80f-3dfc-4b81-8adf-28f8c69be85a
+’secrets:S6697"NMake sure this MySQL database password gets changed and removed from the code.(Ñ¸«‹ùÿÿÿÿJ$4d264cd1-4dc4-4c42-8f05-4eabde33b8ac
+™secrets:S6697"NMake sure this MySQL database password gets changed and removed from the code.(’Öâ¼ÿÿÿÿÿ8§şÎœõ1J$d3eb20b3-7b5a-4c59-a2e7-0508590d8bfe
+secrets:S6697"NMake sure this MySQL database password gets changed and removed from the code.(½ËõJ$18f5d134-deb4-498d-91e8-3ca6a66cf48e
+šsecrets:S6736#"VMake sure these Rabbit MQ credentials get revoked, changed, and removed from the code.(ä¿ÎîúÿÿÿÿJ$b48b10d6-65f9-4c67-af59-b85523a6b6f6
