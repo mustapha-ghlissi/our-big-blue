@@ -1,0 +1,58 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block main %}
+    <section class="section-statistics">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card card-body statistics-item">
+                        <span class="position-absolute top-0 px-2 py-1 translate-middle badge rounded-pill bg-info statistics-item__count">
+                            {{ users }}
+                            <span class="visually-hidden">Utilisateurs actives</span>
+                        </span>
+                        <i class="fa-solid fa-users statistics-item__icon text-secondary"></i>
+                        <div class="statistics-item__content">
+                            <h5 class="text-muted">Utilisateurs actives</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card card-body statistics-item">
+                        <span class="position-absolute top-0 px-2 py-1 translate-middle badge rounded-pill bg-info statistics-item__count">
+                            {{ categories }}
+                            <span class="visually-hidden">Catégories</span>
+                        </span>
+                        <i class="fa-solid fa-cubes statistics-item__icon text-secondary"></i>
+                        <div class="statistics-item__content">
+                            <h5 class="text-muted">Catégories</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card card-body statistics-item">
+                        <span class="position-absolute top-0 px-2 py-1 translate-middle badge rounded-pill bg-info statistics-item__count">
+                            {{ forms }}
+                            <span class="visually-hidden">Formulaires en utilisation</span>
+                        </span>
+                        <i class="fa-brands fa-wpforms statistics-item__icon text-secondary"></i>
+                        <div class="statistics-item__content">
+                            <h5 class="text-muted">Formulaires en utilisation</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card card-body statistics-item">
+                        <span class="position-absolute top-0 px-2 py-1 translate-middle badge rounded-pill bg-info statistics-item__count">
+                            {{ capturedDatas }}
+                            <span class="visually-hidden">Données collectées</span>
+                        </span>
+                        <i class="fa-regular fa-rectangle-list statistics-item__icon text-secondary"></i>
+                        <div class="statistics-item__content">
+                            <h5 class="text-muted">Données collectées</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

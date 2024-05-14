@@ -18,7 +18,7 @@ class FormFieldListener
     public function prePersist(Field $field, PrePersistEventArgs $event): void
     {
         $field->setFieldId(
-            $this->slugger->slug($field->getName(), '_')
+            strtolower($this->slugger->slug($field->getName(), '_'))
         );
     }
 }

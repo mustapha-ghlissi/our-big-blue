@@ -7,16 +7,16 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait TimeStampableTrait
 {
-    #[ORM\Column()]
-    private \DateTimeImmutable $createdAt;
+    #[ORM\Column(type: "date")]
+    private \DateTimeInterface $createdAt;
 
-    #[ORM\Column(nullable: true)]
-    private \DateTimeImmutable $updatedAt;
+    #[ORM\Column(type: "date", nullable: true)]
+    private \DateTimeInterface $updatedAt;
 
     /**
-     * @return \DateTimeImmutable
+     * @return \DateTimeInterface
      */
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -24,14 +24,14 @@ trait TimeStampableTrait
     #[ORM\PrePersist]
     public function setCreatedAt(): self
     {
-        $this->createdAt = Carbon::now()->toDateTimeImmutable();
+        $this->createdAt = Carbon::now();
         return $this;
     }
 
     /**
-     * @return \DateTimeImmutable
+     * @return \DateTimeInterface
      */
-    public function getUpdatedAt(): \DateTimeImmutable
+    public function getUpdatedAt(): \DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -39,7 +39,7 @@ trait TimeStampableTrait
     #[ORM\PreUpdate]
     public function setUpdatedAt(): self
     {
-        $this->updatedAt = Carbon::now()->toDateTimeImmutable();
+        $this->updatedAt = Carbon::now();
         return $this;
     }
 }

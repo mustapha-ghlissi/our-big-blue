@@ -10,7 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource]
+#[ApiResource(
+    inputFormats: ['multipart' => ['multipart/form-data']],
+    outputFormats: ['jsonld' => ['application/ld+json']],
+)]
 #[ORM\Entity(repositoryClass: FieldRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Field
@@ -20,41 +23,41 @@ class Field
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['form:read'])]
+    #[Groups(['form:read', 'category:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank()]
-    #[Groups(['form:read'])]
+    #[Groups(['form:read', 'category:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank()]
-    #[Groups(['form:read'])]
+    #[Groups(['form:read', 'category:read'])]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['form:read'])]
+    #[Groups(['form:read', 'category:read'])]
     private ?string $fieldId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['form:read'])]
+    #[Groups(['form:read', 'category:read'])]
     private ?string $placeholder = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['form:read'])]
+    #[Groups(['form:read', 'category:read'])]
     private ?string $defaultValue = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    #[Groups(['form:read'])]
+    #[Groups(['form:read', 'category:read'])]
     private ?array $possibleOptions = null;
 
     #[ORM\Column(options: ['default' => false])]
-    #[Groups(['form:read'])]
+    #[Groups(['form:read', 'category:read'])]
     private ?bool $required = null;
 
     #[ORM\Column(options: ['default' => false])]
-    #[Groups(['form:read'])]
+    #[Groups(['form:read', 'category:read'])]
     private ?bool $multiple = null;
 
     #[ORM\ManyToOne(inversedBy: 'fields')]

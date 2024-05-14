@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Link;
 use App\Repository\FormRepository;
 use App\Traits\EntityIdTrait;
 use App\Traits\TimeStampableTrait;
@@ -14,20 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
+    inputFormats: ['multipart' => ['multipart/form-data']],
+    outputFormats: ['jsonld' => ['application/ld+json']],
     normalizationContext: ['groups' => ['form:read']],
     denormalizationContext: ['groups' => ['form:write']]
-)]
-#[ApiResource(
-    normalizationContext: ['groups' => ['form:read']],
-    denormalizationContext: ['groups' => ['form:write']],
-    uriTemplate: '/categories/{id}/form',
-    operations: [new Get()],
-    uriVariables: [
-        'id' => new Link(
-            fromClass: Category::class,
-            fromProperty: 'form'
-        )
-    ]
 )]
 #[ORM\Entity(repositoryClass: FormRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -39,7 +27,7 @@ class Form
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['form:read'])]
+    #[Groups(['form:read', 'category:read'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(targetEntity: Category::class, inversedBy: 'form')]
@@ -51,7 +39,7 @@ class Form
      * @var Collection<int, Field>
      */
     #[ORM\OneToMany(targetEntity: Field::class, mappedBy: 'form', cascade: ["persist", "remove"], orphanRemoval: true)]
-    #[Groups(['form:read'])]
+    #[Groups(['form:read', 'category:read'])]
     private Collection $fields;
 
     /**

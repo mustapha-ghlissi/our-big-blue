@@ -7,3 +7,7 @@ controllers:
 auth:
     path: /api/auth
     methods: ['POST']
+
+auth_refresh:
+    path: /api/auth/refresh
+    methods: ['POST']

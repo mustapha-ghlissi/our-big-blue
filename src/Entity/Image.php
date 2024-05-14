@@ -11,6 +11,7 @@ use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
@@ -19,7 +20,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
         new Get(),
         new GetCollection(),
         new Post(
-            inputFormats:      ['multipart' => ['multipart/form-data']],
             openapi:           new Model\Operation(
                 requestBody: new Model\RequestBody(
                       content: new \ArrayObject([
@@ -38,7 +38,11 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
                 )
             )
         )
-    ]
+    ],
+    inputFormats: ['multipart' => ['multipart/form-data']],
+    outputFormats: ['jsonld' => ['application/ld+json']],
+    normalizationContext: ['groups' => ['image:read']],
+    denormalizationContext: ['groups' => ['image:write']],
 )]
 #[Vich\Uploadable]
 class Image
@@ -46,22 +50,25 @@ class Image
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(groups: ["captured_data:read"])]
+    #[Groups(groups: ["image:read", "captured_data:read"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(groups: ["captured_data:read"])]
+    #[Groups(groups: ["image:read", "captured_data:read"])]
     public ?string $uri = null;
 
     #[Vich\UploadableField(mapping: 'images', fileNameProperty: 'uri', originalName: 'name')]
-    #[Groups(groups: ["captured_data:write"])]
+    #[Groups(groups: ["image:write", "captured_data:write"])]
+    #[Assert\NotBlank]
     public ?File $file = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(groups: ["image:read", "captured_data:read"])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(groups: ["image:write"])]
     private ?CapturedData $capturedData = null;
 
     public function __toString(): string

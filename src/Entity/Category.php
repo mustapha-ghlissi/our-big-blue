@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
+    inputFormats: ['multipart' => ['multipart/form-data']],
+    outputFormats: ['jsonld' => ['application/ld+json']],
     normalizationContext: ['groups' => ['category:read']],
     denormalizationContext: ['groups' => ['category:write']],
 )]
@@ -29,6 +31,7 @@ class Category
     private ?string $name = null;
 
     #[ORM\OneToOne(targetEntity: Form::class, mappedBy: 'category', cascade: ['persist', 'remove'])]
+    #[Groups(['category:read'])]
     private ?Form $form = null;
 
     public function getId(): ?int

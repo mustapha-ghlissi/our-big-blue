@@ -11,7 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ApiResource]
+#[ApiResource(
+    inputFormats: ['multipart' => ['multipart/form-data']],
+    outputFormats: ['jsonld' => ['application/ld+json']],
+)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -145,6 +148,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getFirstName(): ?string
     {
+        if ($this->firstName) {
+            return ucfirst($this->firstName);
+        }
+
         return $this->firstName;
     }
 
@@ -157,6 +164,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getLastName(): ?string
     {
+        if ($this->lastName) {
+            return ucfirst($this->lastName);
+        }
+
         return $this->lastName;
     }
 
@@ -210,16 +221,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getFullName(): ?string {
-        if (!$this->firstName) {
+        if (!$this->getFirstName()) {
             return null;
         }
 
-        return $this->firstName . $this->lastName ? ' ' . $this->lastName : '';
+        return $this->getFirstName() . ($this->getLastName() ? ' ' . $this->getLastName() : '');
     }
 
     public function __toString(): string
     {
-        if (!$this->firstName) {
+        if (!$this->getFirstName()) {
             return $this->getEmail();
         }
 

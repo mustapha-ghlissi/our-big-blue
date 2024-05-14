@@ -3,9 +3,9 @@
 namespace App\Serializer;
 
 use App\Entity\Image;
-use Vich\UploaderBundle\Storage\StorageInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 
 class ImageNormalizer implements NormalizerInterface

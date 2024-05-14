@@ -4,15 +4,26 @@ namespace App\Controller\Admin;
 
 use App\Entity\CapturedData;
 use App\Form\ImageType;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 
 class CapturedDataCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
         return CapturedData::class;
+    }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        $crud = parent::configureCrud($crud);
+
+        return $crud->setEntityLabelInPlural('données collectées')
+            ->setPageTitle('new', 'Nouvelle collection');
     }
 
     public function configureFields(string $pageName): iterable
@@ -22,7 +33,12 @@ class CapturedDataCrudController extends AbstractCrudController
                 ->autocomplete(),
             AssociationField::new('form', 'Formulaire de base')
                 ->autocomplete(),
+            ArrayField::new('data')->hideOnForm()
+                ->setTemplatePath('admin/captured_data/data.html.twig')
+            ,
+            DateField::new('createdAt', 'Créé le')->hideOnForm(),
             CollectionField::new('images', 'Liste des images')
+                ->hideOnIndex()
                 ->setEntryType(ImageType::class)
                 ->renderExpanded()
                 ->setRequired(true)
@@ -31,5 +47,14 @@ class CapturedDataCrudController extends AbstractCrudController
                     'help_html' => true
                 ])
         ];
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        $filters = parent::configureFilters($filters);
+        return $filters
+            ->add('user')
+            ->add('form')
+            ;
     }
 }

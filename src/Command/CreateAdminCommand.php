@@ -22,24 +22,11 @@ use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 class CreateAdminCommand extends Command
 {
     /**
-     * @var EntityManagerInterface $entityManager
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * @var UserPasswordHasherInterface $passwordHasher
-     */
-    private UserPasswordHasherInterface $passwordHasher;
-
-    /**
      * @param EntityManagerInterface $entityManager
-     * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(private readonly EntityManagerInterface $entityManager)
     {
         parent::__construct();
-        $this->entityManager = $entityManager;
-        $this->passwordHasher = $passwordHasher;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -52,10 +39,10 @@ class CreateAdminCommand extends Command
         $password = $helper->ask($input, $output, $passQuestion);
 
         $user = new User();
-        $password = $this->passwordHasher->hashPassword($user, $password);
         $user->setRoles(['ROLE_ADMIN'])
             ->setEmail($email)
-            ->setPassword($password);
+            ->setPassword($password)
+        ;
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

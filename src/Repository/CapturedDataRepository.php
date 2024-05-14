@@ -21,28 +21,11 @@ class CapturedDataRepository extends ServiceEntityRepository
         parent::__construct($registry, CapturedData::class);
     }
 
-//    /**
-//     * @return CapturedData[] Returns an array of CapturedData objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?CapturedData
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function getCount()
+    {
+        return $this->createQueryBuilder('cd')
+            ->select('count(cd.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

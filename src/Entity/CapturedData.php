@@ -3,10 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Repository\CapturedDataRepository;
 use App\Traits\EntityIdTrait;
 use App\Traits\TimeStampableTrait;
@@ -14,31 +10,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
-    operations: [
-        new GetCollection(),
-        new Post(
-            inputFormats: ['multipart' => ['multipart/form-data']],
-        ),
-        new Delete(),
-        new Put()
-    ],
+    inputFormats: ['multipart' => ['multipart/form-data']],
+    outputFormats: ['jsonld' => ['application/ld+json']],
     normalizationContext: ['groups' => ['captured_data:read']],
     denormalizationContext: ['groups' => ['captured_data:write']]
 )]
 #[ORM\Entity(repositoryClass: CapturedDataRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[Vich\Uploadable]
 class CapturedData
 {
     use EntityIdTrait;
     use TimeStampableTrait;
-
-    #[ORM\Column]
-    #[Groups(groups: ["captured_data:read", "captured_data:write"])]
-    private array $data = [];
 
     #[ORM\ManyToOne(inversedBy: 'capturedData')]
     #[ORM\JoinColumn(nullable: false)]
@@ -55,7 +40,12 @@ class CapturedData
      */
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'capturedData', cascade: ["persist", "remove"], orphanRemoval: true)]
     #[Groups(groups: ["captured_data:read", "captured_data:write"])]
+    #[Assert\Valid]
     private Collection $images;
+
+    #[ORM\Column]
+    #[Groups(groups: ["captured_data:read", "captured_data:write"])]
+    private array $data = [];
 
     public function __construct()
     {
@@ -65,18 +55,6 @@ class CapturedData
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getData(): array
-    {
-        return $this->data;
-    }
-
-    public function setData(array $data): static
-    {
-        $this->data = $data;
-
-        return $this;
     }
 
     public function getForm(): ?Form
@@ -129,6 +107,18 @@ class CapturedData
                 $image->setCapturedData(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    public function setData(array $data): static
+    {
+        $this->data = $data;
 
         return $this;
     }

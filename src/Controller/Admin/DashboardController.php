@@ -6,34 +6,57 @@ use App\Entity\CapturedData;
 use App\Entity\Category;
 use App\Entity\Form;
 use App\Entity\User;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted(User::ROLE_ADMIN)]
 class DashboardController extends AbstractDashboardController
 {
+    public function __construct()
+    {
+    }
+
+    public function configureAssets(): Assets
+    {
+        return Assets::new()
+            ->addWebpackEncoreEntry('app');
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            EntityManagerInterface::class => '?' . EntityManagerInterface::class
+        ]);
+    }
+
     #[Route('/', name: 'admin')]
     public function index(): Response
     {
-        $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        return $this->redirect($adminUrlGenerator->setController(UserCrudController::class)->generateUrl());
+        $entityManager = $this->container->get(EntityManagerInterface::class);
+        $users = $entityManager->getRepository(User::class)->getCount();
+        $forms = $entityManager->getRepository(Form::class)->getCount();
+        $categories = $entityManager->getRepository(Category::class)->getCount();
+        $capturedDatas = $entityManager->getRepository(CapturedData::class)->getCount();
 
-
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
-        // return $this->render('some/path/my-dashboard.html.twig');
+        return $this->render('admin/dashboard.html.twig', [
+            'users' => $users,
+            'forms' => $forms,
+            'categories' => $categories,
+            'capturedDatas' => $capturedDatas
+        ]);
     }
 
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Our Big Blue');
+            ->setTitle('Notre Grand Bleu');
     }
 
     public function configureMenuItems(): iterable
@@ -43,7 +66,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Utilisateurs', 'fa-solid fa-users', User::class);
         yield MenuItem::linkToCrud('Categories', 'fa-solid fa-cubes', Category::class);
         yield MenuItem::linkToCrud('Forms', 'fa-brands fa-wpforms', Form::class);
-        yield MenuItem::linkToCrud('Données collectées', 'fa-brands fa-wpforms', CapturedData::class);
+        yield MenuItem::linkToCrud('Données collectées', 'fa-regular fa-rectangle-list', CapturedData::class);
         yield MenuItem::section('Déconnexion');
         yield MenuItem::linkToLogout('Déconnexion', 'fa-solid fa-right-from-bracket');
     }

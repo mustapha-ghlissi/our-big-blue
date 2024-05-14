@@ -24,10 +24,6 @@ services:
         arguments:
             - $builder
 
-    App\EventListener\ImageUriListener:
-        tags:
-            - { name: kernel.event_listener, event: vich_uploader.post_upload }
-
     App\EventListener\JWTCreatedListener:
         class: App\EventListener\JWTCreatedListener
         arguments: [ '@request_stack' ]
@@ -37,4 +33,3 @@ services:
     App\Doctrine\CategoryExtension:
         tags:
             - { name: api_platform.doctrine.orm.query_extension.collection }
-            - { name: api_platform.doctrine.orm.query_extension.item }

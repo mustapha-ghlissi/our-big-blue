@@ -86,6 +86,9 @@ final class FormFieldTypeProvider
             },
             FieldTypeEnum::DATE->value => static function () use($options) {
                 $options['widget'] = 'single_text';
+                $options['html5'] = false;
+                $options['format'] = 'dd/MM/yyyy';
+                $options['attr']['class'] = 'datepicker';
 
                 return [
                     'class' => DateType::class,
