@@ -10,6 +10,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CapturedDataCrudController extends AbstractCrudController
 {
@@ -33,7 +37,7 @@ class CapturedDataCrudController extends AbstractCrudController
                 ->autocomplete(),
             AssociationField::new('form', 'Formulaire de base')
                 ->autocomplete(),
-            ArrayField::new('data')->hideOnForm()
+            CollectionField::new('data')->hideOnForm()
                 ->setTemplatePath('admin/captured_data/data.html.twig')
             ,
             DateField::new('createdAt', 'Créé le')->hideOnForm(),
@@ -45,7 +49,7 @@ class CapturedDataCrudController extends AbstractCrudController
                 ->setFormTypeOptions([
                     'help' => 'Seuls les fichiers ayant l\'extension (<b>jpg, jpeg, png ou pdf</b>) sont acceptés.',
                     'help_html' => true
-                ])
+                ]),
         ];
     }
 

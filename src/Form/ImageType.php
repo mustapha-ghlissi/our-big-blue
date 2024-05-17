@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class ImageType extends AbstractType
+final class ImageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -17,6 +17,8 @@ class ImageType extends AbstractType
                 'label' => false,
                 'required' => true,
                 'allow_delete' => false,
+                'asset_helper' => true,
+                'download_uri' => true
             ));
 
     }

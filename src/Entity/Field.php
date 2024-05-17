@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     inputFormats: ['multipart' => ['multipart/form-data']],
-    outputFormats: ['jsonld' => ['application/ld+json']],
+    outputFormats: ['jsonld' => ['application/ld+json']]
 )]
 #[ORM\Entity(repositoryClass: FieldRepository::class)]
 #[ORM\HasLifecycleCallbacks]

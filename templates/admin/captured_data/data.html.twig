@@ -11,30 +11,34 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {% set previewFields = init_preview_fields(entity.instance) %}
-
                 <table class="table table-striped table-bordered">
-                    <tbody>
-                    {% for key, item in field.value %}
-                        {% if previewFields[key] is defined %}
-                            <tr>
-                                <th>
-                                    {{ previewFields[key] }}:
-                                </th>
-                                <td>
-                                    {% if key == 'location' %}
-                                        <a class="btn btn-link" href="{{ item }}" target="_blank">
-                                            <i class="fa"></i> Voir sur la carte Google
-                                        </a>
+                <tbody>
+                {% for key, item in field.value %}
+                    {% if key != "latitude" and key != "longitude" %}
+                        <tr>
+                            <th>
+                                {{ item.label }}:
+                            </th>
+                            <td>
+                                {% if key == 'location' %}
+                                    <a class="btn btn-default" href="{{ item.value }}" target="_blank">
+                                        <i class="fa-solid fa-map-location-dot"></i> Voir sur la carte Google
+                                    </a>
+                                {% else %}
+                                    {% if item.value is iterable %}
+                                        {% for option in item.value %}
+                                            <span class="badge rounded-pill text-bg-secondary px-2 py-1">{{ option }}</span>
+                                        {% endfor %}
                                     {% else %}
-                                        {{ item }}
+                                        {{ item.value }}
                                     {% endif %}
-                                </td>
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                    </tbody>
-                </table>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>

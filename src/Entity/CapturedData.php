@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CapturedDataRepository;
 use App\Traits\EntityIdTrait;
@@ -11,6 +13,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ApiResource(
     inputFormats: ['multipart' => ['multipart/form-data']],
@@ -18,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['captured_data:read']],
     denormalizationContext: ['groups' => ['captured_data:write']]
 )]
+#[ApiFilter(DateFilter::class, properties: ['createdAt'])]
 #[ORM\Entity(repositoryClass: CapturedDataRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class CapturedData

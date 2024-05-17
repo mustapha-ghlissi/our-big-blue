@@ -32,7 +32,7 @@ class Form
 
     #[ORM\OneToOne(targetEntity: Category::class, inversedBy: 'form')]
     #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: false)]
-    #[Groups(['form:read'])]
+    #[Groups(['form:read', 'captured_data:read'])]
     private ?Category $category = null;
 
     /**
