@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\User;
+use App\Enum\UserRolesEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -24,7 +25,10 @@ class CreateAdminCommand extends Command
     /**
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(private readonly EntityManagerInterface $entityManager)
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserPasswordHasherInterface $passwordHasher
+    )
     {
         parent::__construct();
     }
@@ -36,10 +40,11 @@ class CreateAdminCommand extends Command
         $emailQuestion = new Question('Enter an email or a username [admin]: ', 'admin');
         $email = $helper->ask($input, $output, $emailQuestion);
         $passQuestion = new Question('Enter a password [admin]: ', 'admin');
-        $password = $helper->ask($input, $output, $passQuestion);
+        $plainPassword = $helper->ask($input, $output, $passQuestion);
 
         $user = new User();
-        $user->setRoles(['ROLE_ADMIN'])
+        $password = $this->passwordHasher->hashPassword($user, $plainPassword);
+        $user->setRoles([UserRolesEnum::ROLE_ADMIN])
             ->setEmail($email)
             ->setPassword($password)
         ;

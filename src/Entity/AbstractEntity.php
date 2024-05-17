@@ -1,17 +1,38 @@
 <?php
 
-namespace App\Traits;
+namespace App\Entity;
 
+use App\Enum\NormalizationContextGroups;
 use Carbon\Carbon;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
-trait TimeStampableTrait
+/**
+ * @class AbstractEntity
+ */
+abstract class AbstractEntity
 {
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    #[Groups(groups: [NormalizationContextGroups::DEFAULT])]
+    protected ?int $id = null;
+
     #[ORM\Column(type: "date")]
-    private \DateTimeInterface $createdAt;
+    #[Groups(groups: [NormalizationContextGroups::DEFAULT])]
+    protected \DateTimeInterface $createdAt;
 
     #[ORM\Column(type: "date", nullable: true)]
-    private \DateTimeInterface $updatedAt;
+    #[Groups(groups: [NormalizationContextGroups::DEFAULT])]
+    protected \DateTimeInterface $updatedAt;
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     /**
      * @return \DateTimeInterface

@@ -9,7 +9,7 @@ use Doctrine\ORM\Events;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[AsEntityListener(event: Events::prePersist, method: 'prePersist', entity: Field::class)]
-class FormFieldListener
+final class FormFieldListener
 {
     public function __construct(private readonly SluggerInterface $slugger)
     {

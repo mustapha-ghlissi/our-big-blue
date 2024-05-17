@@ -3,9 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Enum\DenormalizationContextGroups;
+use App\Enum\NormalizationContextGroups;
 use App\Repository\FormRepository;
-use App\Traits\EntityIdTrait;
-use App\Traits\TimeStampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,32 +14,34 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ApiResource(
     inputFormats: ['multipart' => ['multipart/form-data']],
     outputFormats: ['jsonld' => ['application/ld+json']],
-    normalizationContext: ['groups' => ['form:read']],
-    denormalizationContext: ['groups' => ['form:write']]
+    normalizationContext: ['groups' => [
+        NormalizationContextGroups::DEFAULT,
+        NormalizationContextGroups::FORM,
+    ]],
+    denormalizationContext: ['groups' => [
+        DenormalizationContextGroups::FORM
+    ]]
 )]
 #[ORM\Entity(repositoryClass: FormRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Form
+final class Form extends AbstractEntity
 {
-    use EntityIdTrait;
-    use TimeStampableTrait;
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    #[Groups(['form:read', 'category:read'])]
-    private ?int $id = null;
-
     #[ORM\OneToOne(targetEntity: Category::class, inversedBy: 'form')]
     #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: false)]
-    #[Groups(['form:read', 'captured_data:read'])]
+    #[Groups([
+        NormalizationContextGroups::FORM,
+        NormalizationContextGroups::CAPTURED_DATA,
+    ])]
     private ?Category $category = null;
 
     /**
      * @var Collection<int, Field>
      */
     #[ORM\OneToMany(targetEntity: Field::class, mappedBy: 'form', cascade: ["persist", "remove"], orphanRemoval: true)]
-    #[Groups(['form:read', 'category:read'])]
+    #[Groups([
+        NormalizationContextGroups::FORM,
+        NormalizationContextGroups::CATEGORY,
+    ])]
     private Collection $fields;
 
     /**
@@ -62,11 +64,6 @@ class Form
     public function __toString(): string
     {
         return $this->category->getName() . ' Form';
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getCategory(): ?Category

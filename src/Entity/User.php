@@ -3,8 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Enum\DenormalizationContextGroups;
+use App\Enum\NormalizationContextGroups;
 use App\Repository\UserRepository;
-use App\Traits\TimeStampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,23 +15,23 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ApiResource(
     inputFormats: ['multipart' => ['multipart/form-data']],
     outputFormats: ['jsonld' => ['application/ld+json']],
+    normalizationContext: ['groups' => [
+        NormalizationContextGroups::DEFAULT,
+        NormalizationContextGroups::USER,
+    ]],
+    denormalizationContext: ['groups' => [
+        DenormalizationContextGroups::USER,
+    ]],
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ORM\HasLifecycleCallbacks]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    use TimeStampableTrait;
-
     public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_USER = 'ROLE_USER';
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
@@ -70,11 +71,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->capturedData = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getEmail(): ?string

@@ -4,7 +4,7 @@ namespace App\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 
-class StringToArrayTransformer implements DataTransformerInterface
+final class StringToArrayTransformer implements DataTransformerInterface
 {
     public function transform(mixed $value): ?string
     {

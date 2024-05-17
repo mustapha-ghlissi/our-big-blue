@@ -9,7 +9,7 @@ use App\Entity\Category;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\SecurityBundle\Security;
 
-class CategoryExtension implements QueryCollectionExtensionInterface
+final class CategoryExtension implements QueryCollectionExtensionInterface
 {
     public function __construct(
         private Security $security,

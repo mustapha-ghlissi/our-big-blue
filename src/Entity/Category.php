@@ -3,48 +3,38 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
-use App\Controller\Api\GetPreviewFieldsController;
+use App\Enum\DenormalizationContextGroups;
+use App\Enum\NormalizationContextGroups;
 use App\Repository\CategoryRepository;
-use App\Traits\TimeStampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     inputFormats: ['multipart' => ['multipart/form-data']],
     outputFormats: ['jsonld' => ['application/ld+json']],
-    normalizationContext: ['groups' => ['category:read']],
-    denormalizationContext: ['groups' => ['category:write']],
+    normalizationContext: ['groups' => [
+        NormalizationContextGroups::DEFAULT,
+        NormalizationContextGroups::CATEGORY,
+    ]],
+    denormalizationContext: ['groups' => [
+        DenormalizationContextGroups::CATEGORY,
+    ]],
 )]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Category
+final class Category extends AbstractEntity
 {
-    use TimeStampableTrait;
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    #[Groups(['category:read'])]
-    private ?int $id = null;
-
     #[ORM\Column(length: 255)]
-    #[Groups(['category:read', 'category:write'])]
+    #[Groups([
+        NormalizationContextGroups::CATEGORY,
+        DenormalizationContextGroups::CATEGORY,
+        NormalizationContextGroups::CAPTURED_DATA
+    ])]
     private ?string $name = null;
 
     #[ORM\OneToOne(targetEntity: Form::class, mappedBy: 'category', cascade: ['persist', 'remove'])]
-    #[Groups(['category:read'])]
+    #[Groups([NormalizationContextGroups::CATEGORY])]
     private ?Form $form = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getName(): ?string
     {

@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 
-class FormSelectFieldSubscriber implements EventSubscriberInterface
+final class FormSelectFieldSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly FormBuilderInterface $builder,

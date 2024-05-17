@@ -7,6 +7,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model;
+use App\Enum\DenormalizationContextGroups;
+use App\Enum\NormalizationContextGroups;
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -41,44 +43,50 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     ],
     inputFormats: ['multipart' => ['multipart/form-data']],
     outputFormats: ['jsonld' => ['application/ld+json']],
-    normalizationContext: ['groups' => ['image:read']],
-    denormalizationContext: ['groups' => ['image:write']],
+    normalizationContext: ['groups' => [
+        NormalizationContextGroups::DEFAULT,
+        NormalizationContextGroups::IMAGE,
+    ]],
+    denormalizationContext: ['groups' => [
+        DenormalizationContextGroups::IMAGE
+    ]],
 )]
 #[Vich\Uploadable]
-class Image
+#[ORM\HasLifecycleCallbacks]
+final class Image extends AbstractEntity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    #[Groups(groups: ["image:read", "captured_data:read"])]
-    private ?int $id = null;
-
     #[ORM\Column(length: 255)]
-    #[Groups(groups: ["image:read", "captured_data:read"])]
+    #[Groups(groups: [
+        NormalizationContextGroups::IMAGE,
+        NormalizationContextGroups::CAPTURED_DATA,
+    ])]
     public ?string $uri = null;
 
     #[Vich\UploadableField(mapping: 'images', fileNameProperty: 'uri', originalName: 'name')]
-    #[Groups(groups: ["image:write", "captured_data:write"])]
+    #[Groups(groups: [
+        DenormalizationContextGroups::IMAGE,
+        DenormalizationContextGroups::CAPTURED_DATA,
+    ])]
     #[Assert\NotBlank]
     public ?File $file = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(groups: ["image:read", "captured_data:read"])]
+    #[Groups(groups: [
+        NormalizationContextGroups::IMAGE,
+        NormalizationContextGroups::CAPTURED_DATA,
+    ])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(groups: ["image:write"])]
+    #[Groups(groups: [
+        DenormalizationContextGroups::IMAGE
+    ])]
     private ?CapturedData $capturedData = null;
 
     public function __toString(): string
     {
         return $this->name;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getUri(): ?string

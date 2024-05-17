@@ -3,8 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Enum\DenormalizationContextGroups;
+use App\Enum\NormalizationContextGroups;
 use App\Repository\FieldRepository;
-use App\Traits\TimeStampableTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -12,62 +13,88 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     inputFormats: ['multipart' => ['multipart/form-data']],
-    outputFormats: ['jsonld' => ['application/ld+json']]
+    outputFormats: ['jsonld' => ['application/ld+json']],
+    normalizationContext: ['groups' => [
+        NormalizationContextGroups::DEFAULT,
+        NormalizationContextGroups::FIELD,
+    ]],
+    denormalizationContext: ['groups' => [
+        DenormalizationContextGroups::FIELD,
+    ]]
 )]
 #[ORM\Entity(repositoryClass: FieldRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Field
+final class Field extends AbstractEntity
 {
-    use TimeStampableTrait;
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    #[Groups(['form:read', 'category:read'])]
-    private ?int $id = null;
-
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank()]
-    #[Groups(['form:read', 'category:read'])]
+    #[Groups([
+        NormalizationContextGroups::FIELD,
+        NormalizationContextGroups::FORM,
+        NormalizationContextGroups::CATEGORY,
+    ])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank()]
-    #[Groups(['form:read', 'category:read'])]
+    #[Groups([
+        NormalizationContextGroups::FIELD,
+        NormalizationContextGroups::FORM,
+        NormalizationContextGroups::CATEGORY,
+    ])]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['form:read', 'category:read'])]
+    #[Groups([
+        NormalizationContextGroups::FIELD,
+        NormalizationContextGroups::FORM,
+        NormalizationContextGroups::CATEGORY
+    ])]
     private ?string $fieldId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['form:read', 'category:read'])]
+    #[Groups([
+        NormalizationContextGroups::FIELD,
+        NormalizationContextGroups::FORM,
+        NormalizationContextGroups::CATEGORY
+    ])]
     private ?string $placeholder = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['form:read', 'category:read'])]
+    #[Groups([
+        NormalizationContextGroups::FIELD,
+        NormalizationContextGroups::FORM,
+        NormalizationContextGroups::CATEGORY
+    ])]
     private ?string $defaultValue = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    #[Groups(['form:read', 'category:read'])]
+    #[Groups([
+        NormalizationContextGroups::FIELD,
+        NormalizationContextGroups::FORM,
+        NormalizationContextGroups::CATEGORY
+    ])]
     private ?array $possibleOptions = null;
 
     #[ORM\Column(options: ['default' => false])]
-    #[Groups(['form:read', 'category:read'])]
+    #[Groups([
+        NormalizationContextGroups::FIELD,
+        NormalizationContextGroups::FORM,
+        NormalizationContextGroups::CATEGORY
+    ])]
     private ?bool $required = null;
 
     #[ORM\Column(options: ['default' => false])]
-    #[Groups(['form:read', 'category:read'])]
+    #[Groups([
+        NormalizationContextGroups::FIELD,
+        NormalizationContextGroups::FORM,
+        NormalizationContextGroups::CATEGORY
+    ])]
     private ?bool $multiple = null;
 
     #[ORM\ManyToOne(inversedBy: 'fields')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Form $form = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getName(): ?string
     {

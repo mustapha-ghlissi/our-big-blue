@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 
-class ImageNormalizer implements NormalizerInterface
+final class ImageNormalizer implements NormalizerInterface
 {
     private const ALREADY_CALLED = 'Image_NORMALIZER_ALREADY_CALLED';
 

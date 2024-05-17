@@ -11,7 +11,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 /**
  * @class EasyAdminSubscriber
  */
-class EasyAdminSubscriber implements EventSubscriberInterface
+final class EasyAdminSubscriber implements EventSubscriberInterface
 {
 
     public function __construct(private readonly UserPasswordHasherInterface $passwordHasher)

@@ -5,60 +5,68 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use App\Enum\DenormalizationContextGroups;
+use App\Enum\NormalizationContextGroups;
 use App\Repository\CapturedDataRepository;
-use App\Traits\EntityIdTrait;
-use App\Traits\TimeStampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ApiResource(
     inputFormats: ['multipart' => ['multipart/form-data']],
     outputFormats: ['jsonld' => ['application/ld+json']],
-    normalizationContext: ['groups' => ['captured_data:read']],
-    denormalizationContext: ['groups' => ['captured_data:write']]
+    normalizationContext: ['groups' => [
+        NormalizationContextGroups::DEFAULT,
+        NormalizationContextGroups::CAPTURED_DATA,
+    ]],
+    denormalizationContext: ['groups' => [
+        DenormalizationContextGroups::CAPTURED_DATA,
+    ]]
 )]
 #[ApiFilter(DateFilter::class, properties: ['createdAt'])]
 #[ORM\Entity(repositoryClass: CapturedDataRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class CapturedData
+final class CapturedData extends AbstractEntity
 {
-    use EntityIdTrait;
-    use TimeStampableTrait;
-
     #[ORM\ManyToOne(inversedBy: 'capturedData')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(groups: ["captured_data:read", "captured_data:write"])]
+    #[Groups(groups: [
+        NormalizationContextGroups::CAPTURED_DATA,
+        DenormalizationContextGroups::CAPTURED_DATA,
+    ])]
     private ?Form $form = null;
 
     #[ORM\ManyToOne(inversedBy: 'capturedData')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(groups: ["captured_data:read", "captured_data:write"])]
+    #[Groups(groups: [
+        NormalizationContextGroups::CAPTURED_DATA,
+        DenormalizationContextGroups::CAPTURED_DATA,
+    ])]
     private ?User $user = null;
 
     /**
      * @var Collection<int, Image>
      */
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'capturedData', cascade: ["persist", "remove"], orphanRemoval: true)]
-    #[Groups(groups: ["captured_data:read", "captured_data:write"])]
+    #[Groups(groups: [
+        NormalizationContextGroups::CAPTURED_DATA,
+        DenormalizationContextGroups::CAPTURED_DATA,
+    ])]
     #[Assert\Valid]
     private Collection $images;
 
     #[ORM\Column]
-    #[Groups(groups: ["captured_data:read", "captured_data:write"])]
+    #[Groups(groups: [
+        NormalizationContextGroups::CAPTURED_DATA,
+        DenormalizationContextGroups::CAPTURED_DATA,
+    ])]
     private array $data = [];
 
     public function __construct()
     {
         $this->images = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getForm(): ?Form
