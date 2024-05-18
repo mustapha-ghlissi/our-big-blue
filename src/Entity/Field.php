@@ -3,9 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Enum\DenormalizationContextGroups;
-use App\Enum\NormalizationContextGroups;
 use App\Repository\FieldRepository;
+use App\Serializer\DenormalizationContextGroups;
+use App\Serializer\NormalizationContextGroups;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;

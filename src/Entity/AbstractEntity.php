@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Enum\NormalizationContextGroups;
+use App\Serializer\NormalizationContextGroups;
 use Carbon\Carbon;
-use Symfony\Component\Serializer\Attribute\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 /**
  * @class AbstractEntity
