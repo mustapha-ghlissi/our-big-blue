@@ -5,6 +5,12 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\CapturedDataRepository;
 use App\Serializer\DenormalizationContextGroups;
 use App\Serializer\NormalizationContextGroups;
@@ -25,6 +31,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         DenormalizationContextGroups::CAPTURED_DATA,
     ]]
 )]
+#[Post()]
+#[Put()]
+#[Patch()]
+#[Delete()]
+#[Get(security: "is_granted('ROLE_ADMIN') or object.user == user")]
+#[GetCollection(security: "is_granted('ROLE_ADMIN') or object.user == user")]
 #[ApiFilter(DateFilter::class, properties: ['createdAt'])]
 #[ORM\Entity(repositoryClass: CapturedDataRepository::class)]
 #[ORM\HasLifecycleCallbacks]
