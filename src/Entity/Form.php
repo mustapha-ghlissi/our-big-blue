@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 )]
 #[ORM\Entity(repositoryClass: FormRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-final class Form extends AbstractEntity
+class Form extends AbstractEntity
 {
     #[ORM\OneToOne(targetEntity: Category::class, inversedBy: 'form')]
     #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', nullable: false)]

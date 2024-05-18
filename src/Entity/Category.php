@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 )]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-final class Category extends AbstractEntity
+class Category extends AbstractEntity
 {
     #[ORM\Column(length: 255)]
     #[Groups([

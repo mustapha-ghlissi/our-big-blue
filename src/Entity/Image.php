@@ -53,7 +53,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 )]
 #[Vich\Uploadable]
 #[ORM\HasLifecycleCallbacks]
-final class Image extends AbstractEntity
+class Image extends AbstractEntity
 {
     #[ORM\Column(length: 255)]
     #[Groups(groups: [

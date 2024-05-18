@@ -28,11 +28,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(DateFilter::class, properties: ['createdAt'])]
 #[ORM\Entity(repositoryClass: CapturedDataRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-final class CapturedData extends AbstractEntity
+class CapturedData extends AbstractEntity
 {
     #[ORM\ManyToOne(inversedBy: 'capturedData')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(groups: [
+    #[Groups([
         NormalizationContextGroups::CAPTURED_DATA,
         DenormalizationContextGroups::CAPTURED_DATA,
     ])]
@@ -40,7 +40,7 @@ final class CapturedData extends AbstractEntity
 
     #[ORM\ManyToOne(inversedBy: 'capturedData')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(groups: [
+    #[Groups([
         NormalizationContextGroups::CAPTURED_DATA,
         DenormalizationContextGroups::CAPTURED_DATA,
     ])]
@@ -50,7 +50,7 @@ final class CapturedData extends AbstractEntity
      * @var Collection<int, Image>
      */
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'capturedData', cascade: ["persist", "remove"], orphanRemoval: true)]
-    #[Groups(groups: [
+    #[Groups([
         NormalizationContextGroups::CAPTURED_DATA,
         DenormalizationContextGroups::CAPTURED_DATA,
     ])]
@@ -58,7 +58,7 @@ final class CapturedData extends AbstractEntity
     private Collection $images;
 
     #[ORM\Column]
-    #[Groups(groups: [
+    #[Groups([
         NormalizationContextGroups::CAPTURED_DATA,
         DenormalizationContextGroups::CAPTURED_DATA,
     ])]

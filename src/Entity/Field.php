@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: FieldRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-final class Field extends AbstractEntity
+class Field extends AbstractEntity
 {
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank()]
