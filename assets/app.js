@@ -8,7 +8,10 @@ import $ from 'jquery'
 import 'bootstrap-datepicker/dist/js/bootstrap-datepicker.min'
 import 'bootstrap-datepicker/dist/locales/bootstrap-datepicker.fr.min'
 import Tagify from '@yaireo/tagify'
+import 'slick-carousel';
 
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 import '@yaireo/tagify/dist/tagify.css'
 import 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css'
 import  './styles/app.css'
@@ -37,6 +40,23 @@ $(document).ready(function () {
     }
   })
 
+
+  const modalImages = document.querySelector('[id^="modal-images-"]')
+  if (modalImages) {
+    modalImages.addEventListener('shown.bs.modal', event => {
+      $('.slick').slick({
+        dots: true,
+        infinite: false,
+        speed: 300,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true
+      });
+    })
+  }
+
+
+
   function initTagger (id = null) {
     const tagsElement = id ? document.getElementById(id) : document.querySelector('input[data-tags]')
 
@@ -53,7 +73,6 @@ $(document).ready(function () {
       initDatePicker()
     })
   }
-
 
   function initDatePicker() {
     const datepickerElement = $('.datepicker');

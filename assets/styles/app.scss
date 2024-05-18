@@ -24,3 +24,24 @@
   z-index: 999;
   right: 0;
 }
+
+.slick-prev {
+  left: 15px;
+  z-index: 999;
+}
+
+.slick-next {
+  right: 25px;
+  z-index: 999;
+}
+
+.slick-prev:before, .slick-next:before {
+  font-size: 32px;
+  color: var(--button-primary-bg);
+  z-index: 999;
+}
+
+.slick-img {
+  object-fit: contain;
+  height: 65vh
+}

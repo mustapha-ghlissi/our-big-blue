@@ -22,6 +22,7 @@
     "dependencies": {
         "@yaireo/tagify": "^4.25.1",
         "bootstrap-datepicker": "^1.10.0",
-        "jquery": "^3.7.1"
+        "jquery": "^3.7.1",
+        "slick-carousel": "^1.8.1"
     }
 }

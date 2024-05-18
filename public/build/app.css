@@ -1,0 +1,55 @@
+/*!**************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[1].use[1]!./assets/styles/app.css ***!
+  \**************************************************************************************************************/
+.statistics-item {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.statistics-item__icon {
+  font-size: 64px;
+  flex-shrink: 0;
+}
+
+.statistics-item__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.statistics-item__count {
+  flex-shrink: 0;
+  font-size: 19px;
+  z-index: 999;
+  right: 0;
+}
+
+.slick-prev {
+  left: 15px;
+  z-index: 999;
+}
+
+.slick-next {
+  right: 25px;
+  z-index: 999;
+}
+
+.slick-prev:before, .slick-next:before {
+  font-size: 32px;
+  color: var(--button-primary-bg);
+  z-index: 999;
+}
+
+.slick-img {
+  object-fit: contain;
+  height: 65vh;
+}
+
+/*# sourceMappingURL=app.css.map */
+
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXBwLmNzcyIsIm1hcHBpbmdzIjoiOzs7QUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0FDQ0Y7O0FERUE7RUFDRTtFQUNBO0FDQ0Y7O0FERUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0FDQ0Y7O0FERUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtBQ0NGOztBREVBO0VBQ0U7RUFDQTtBQ0NGOztBREVBO0VBQ0U7RUFDQTtBQ0NGOztBREVBO0VBQ0U7RUFDQTtFQUNBO0FDQ0Y7O0FERUE7RUFDRTtFQUNBO0FDQ0Y7O0FBRUEsa0NBQWtDIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vLy4vYXNzZXRzL3N0eWxlcy9hcHAuc2NzcyIsIndlYnBhY2s6Ly8vLi9hc3NldHMvc3R5bGVzL2FwcC5jc3MiXSwibmFtZXMiOltdLCJzb3VyY2VSb290IjoiIn0=*/

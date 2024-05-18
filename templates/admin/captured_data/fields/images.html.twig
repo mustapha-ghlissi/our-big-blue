@@ -1,0 +1,33 @@
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-images-{{ entity.instance.id }}">
+        Voir images
+        <span class="badge text-bg-warning">{{ field.value|length }}</span>
+</button>
+
+<div class="modal fade" id="modal-images-{{ entity.instance.id }}" tabindex="-1"
+     aria-labelledby="modal-{{ entity.instance.id }}-label" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-info">
+                <div class="modal-content">
+                        <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="modal-images-{{ entity.instance.id }}-label">Images Prises</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                                <div class="slick">
+                                        {% for image in field.value %}
+                                                <div class="p-1">
+                                                        <img
+                                                                class="slick-img w-100 img-thumbnail"
+                                                                 src="{{ vich_uploader_asset(image) }}"
+                                                                alt="{{ image.name }}"
+                                                        />
+                                                </div>
+                                        {% endfor %}
+                                </div>
+
+                        </div>
+                        <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        </div>
+                </div>
+        </div>
+</div>

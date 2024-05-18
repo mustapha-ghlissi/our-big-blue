@@ -12,3 +12,4 @@ final class NormalizationContextGroups
     public const IMAGE = "image:read";
     public const USER = "user:read";
 }
+

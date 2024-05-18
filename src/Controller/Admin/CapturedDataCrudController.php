@@ -38,11 +38,10 @@ class CapturedDataCrudController extends AbstractCrudController
             AssociationField::new('form', 'Formulaire de base')
                 ->autocomplete(),
             CollectionField::new('data')->hideOnForm()
-                ->setTemplatePath('admin/captured_data/data.html.twig')
-            ,
+                ->setTemplatePath('admin/captured_data/fields/data.html.twig'),
             DateField::new('createdAt', 'Créé le')->hideOnForm(),
             CollectionField::new('images', 'Liste des images')
-                ->hideOnIndex()
+                ->setTemplatePath('admin/captured_data/fields/images.html.twig')
                 ->setEntryType(ImageType::class)
                 ->renderExpanded()
                 ->setRequired(true)
