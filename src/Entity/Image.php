@@ -67,7 +67,6 @@ class Image extends AbstractEntity
         DenormalizationContextGroups::IMAGE,
         DenormalizationContextGroups::CAPTURED_DATA,
     ])]
-    #[Assert\NotBlank]
     public ?File $file = null;
 
     #[ORM\Column(length: 255)]

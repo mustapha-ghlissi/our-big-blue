@@ -54,7 +54,6 @@ class CapturedData extends AbstractEntity
         NormalizationContextGroups::CAPTURED_DATA,
         DenormalizationContextGroups::CAPTURED_DATA,
     ])]
-    #[Assert\Valid]
     private Collection $images;
 
     #[ORM\Column]
